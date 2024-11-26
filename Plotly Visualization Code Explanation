@@ -1,0 +1,45 @@
+Explanation:
+import plotly.graph_objects as go: Imports the Plotly graph objects module.
+nodes = ['A', 'B', 'C', 'D']: Defines a list of node labels.
+edges = [('A', 'B'), ('A', 'C'), ('B', 'D'), ('C', 'D')]: Defines a list of edges as tuples of node pairs.
+positions = {'A': (1, 1), 'B': (2, 2), 'C': (2, 0), 'D': (3, 1)}: Defines a dictionary of node positions.
+edge_trace = go.Scatter(...): Creates a scatter plot trace for edges.
+x=[]: Initializes an empty list for x-coordinates.
+y=[]: Initializes an empty list for y-coordinates.
+line=dict(width=2, color='#888'): Sets the line width and color.
+hoverinfo='none': Disables hover information.
+mode='lines': Sets the mode to lines.
+for edge in edges: ...: Loops through each edge to add coordinates to the edge trace.
+x0, y0 = positions[edge[0]]: Gets the starting node position.
+x1, y1 = positions[edge[1]]: Gets the ending node position.
+edge_trace['x'] += [x0, x1, None]: Adds the x-coordinates to the trace.
+edge_trace['y'] += [y0, y1, None]: Adds the y-coordinates to the trace.
+node_trace = go.Scatter(...): Creates a scatter plot trace for nodes.
+x=[]: Initializes an empty list for x-coordinates.
+y=[]: Initializes an empty list for y-coordinates.
+text=[]: Initializes an empty list for node labels.
+mode='markers+text': Sets the mode to markers and text.
+hoverinfo='text': Enables hover information for text.
+marker=dict(...): Configures marker properties.
+showscale=True: Shows the color scale.
+colorscale='YlGnBu': Sets the color scale.
+size=10: Sets the marker size.
+colorbar=dict(...): Configures the color bar.
+thickness=15: Sets the color bar thickness.
+title='Node Connections': Sets the color bar title.
+xanchor='left': Anchors the color bar to the left.
+titleside='right': Positions the title on the right.
+for node in nodes: ...: Loops through each node to add coordinates and labels to the node trace.
+x, y = positions[node]: Gets the node position.
+node_trace['x'] += [x]: Adds the x-coordinate to the trace.
+node_trace['y'] += [y]: Adds the y-coordinate to the trace.
+node_trace['text'] += [node]: Adds the node label to the trace.
+fig = go.Figure(data=[edge_trace, node_trace], ...): Creates a figure with the edge and node traces.
+layout=go.Layout(...): Configures the layout.
+title='Graph Visualization': Sets the title.
+showlegend=False: Hides the legend.
+hovermode='closest': Enables closest hover mode.
+margin=dict(b=20, l=5, r=5, t=40): Sets the margins.
+xaxis=dict(showgrid=False, zeroline=False): Configures the x-axis.
+yaxis=dict(showgrid=False, zeroline=False): Configures the y-axis.
+fig.show(): Displays the figure.
