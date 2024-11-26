@@ -1,0 +1,37 @@
+Explanation:
+
+<!DOCTYPE html>: Declares the document type and version of HTML.
+  
+<html>: The root element of the HTML document.
+  
+<head>: Contains meta-information about the document.
+  
+<title>Neovis.js Example</title>: Sets the title of the web page.
+  
+<script src="https://cdn.jsdelivr.net/npm/neovis.js/dist/neovis.js"></script>: Includes the Neovis.js library from a CDN.
+  
+<body>: Contains the content of the HTML document.
+  
+<div id="viz" style="width: 800px; height: 600px;"></div>: Creates a div element with an id of "viz" and sets its size. This is where the graph will be rendered.
+  
+<script>: Starts a JavaScript block.
+  
+var config = { ... };: Defines a configuration object for Neovis.js.
+  
+container_id: "viz": Specifies the id of the HTML element where the graph will be rendered.
+  
+server_url: "bolt://localhost:7687": URL of the Neo4j database.
+  
+server_user: "neo4j": Username for the Neo4j database.
+  
+server_password: "password": Password for the Neo4j database.
+  
+labels: { "Movie": { "caption": "title", "size": "popularity" } }: Configures how movie nodes are displayed, using the "title" for captions and "popularity" for size.
+  
+relationships: { "SIMILAR_TO": { "thickness": "weight", "caption": false } }: Configures how relationships are displayed, using "weight" for thickness and no captions.
+  
+initial_cypher: "MATCH (m:Movie)-[:SIMILAR_TO]-(rec:Movie) RETURN m, rec": The initial Cypher query to fetch data from the Neo4j database.
+  
+var viz = new Neovis.default(config);: Creates a new Neovis.js instance with the specified configuration.
+  
+viz.render();: Renders the graph visualization.
