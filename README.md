@@ -1,7 +1,3 @@
-Adding performance metrics is a great idea to evaluate and improve the recommendation engine. Here’s an updated version of the README file with a section for performance metrics:
-
----
-
 # Movie Recommendation Engine using GraphRAG
 
 ## Overview
@@ -131,6 +127,47 @@ f1 = f1_score(true_relevant, predicted_relevant)
 print(f"Precision: {precision}")
 print(f"Recall: {recall}")
 print(f"F1 Score: {f1}")
+```
+
+## API Documentation
+The recommendation engine provides a simple API to get movie recommendations.
+
+### Endpoints
+
+#### `GET /recommend`
+Get movie recommendations based on a given movie title.
+
+- **URL**: `/recommend`
+- **Method**: `GET`
+- **URL Params**: 
+  - `title=[string]` (required) - The title of the movie for which to get recommendations.
+- **Success Response**:
+  - **Code**: 200 OK
+  - **Content**: 
+    ```json
+    {
+      "recommendations": ["Movie1", "Movie2", "Movie3"]
+    }
+    ```
+- **Error Response**:
+  - **Code**: 400 BAD REQUEST
+  - **Content**: 
+    ```json
+    {
+      "error": "Movie title is required."
+    }
+    ```
+
+### Example Request
+```bash
+curl -X GET "http://localhost:5000/recommend?title=3%20Idiots"
+```
+
+### Example Response
+```json
+{
+  "recommendations": ["Taare Zameen Par", "PK", "Munna Bhai M.B.B.S."]
+}
 ```
 
 ## Future Improvements
