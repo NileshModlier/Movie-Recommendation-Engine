@@ -1,0 +1,18 @@
+from py2neo import Graph
+
+# Connect to the Neo4j database
+graph = Graph("bolt://localhost:7687", auth=("neo4j", "password"))
+
+# Function to recommend movies
+def recommend_movies(movie_title):
+    query = """
+    MATCH (m:Movie {title: $title})-[:SIMILAR_TO]-(rec:Movie)
+    RETURN rec.title AS recommendation
+    LIMIT 3
+    """
+    results = graph.run(query, title=movie_title)
+    return [record["recommendation"] for record in results]
+
+# Example usage
+recommendations = recommend_movies("3 Idiots")
+print(recommendations)
