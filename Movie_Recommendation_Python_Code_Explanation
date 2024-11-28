@@ -1,0 +1,107 @@
+
+```python
+import pandas as pd
+```
+- **Import pandas**: This line imports the pandas library, which is used for data manipulation and analysis.
+
+```python
+# Load the CSV file containing movie data
+movies_df = pd.read_csv('bollywood_data_set.csv')
+```
+- **Load CSV File**: This line reads the CSV file named 'bollywood_data_set.csv' into a pandas DataFrame called `movies_df`.
+
+```python
+# Print column names to verify
+print(movies_df.columns)
+```
+- **Print Column Names**: This line prints the column names of the DataFrame to verify that the data has been loaded correctly.
+
+```python
+# Ensure 'popularity' column exists and convert it to numeric
+if 'popularity' in movies_df.columns:
+    movies_df['popularity'] = pd.to_numeric(movies_df['popularity'], errors='coerce')
+    movies_df['popularity'] = movies_df['popularity'].fillna(0)
+else:
+    print("The 'popularity' column is not found in the dataset.")
+```
+- **Check and Convert 'popularity' Column**: This block checks if the 'popularity' column exists. If it does, it converts the column to numeric values, coercing any non-numeric values to `NaN`, and then fills any `NaN` values with 0. If the column does not exist, it prints a message.
+
+```python
+# Function to recommend movies based on a given movie name
+def recommend_movies(movie_name, num_recommendations=3):
+    # Check if the movie exists in the dataset
+    if movie_name not in movies_df['title'].values:
+        return f"Movie '{movie_name}' not found in the dataset."
+```
+- **Define recommend_movies Function**: This function takes a movie name and the number of recommendations as input.
+- **Check Movie Existence**: It checks if the given movie name exists in the 'title' column of the DataFrame. If not, it returns a message indicating the movie was not found.
+
+```python
+    # Get the index of the given movie
+    movie_index = movies_df[movies_df['title'] == movie_name].index[0]
+```
+- **Get Movie Index**: This line finds the index of the given movie in the DataFrame.
+
+```python
+    # Calculate similarity scores (for simplicity, using popularity as a proxy for similarity)
+    movies_df['similarity'] = abs(movies_df['popularity'] - movies_df.loc[movie_index, 'popularity'])
+```
+- **Calculate Similarity Scores**: This line calculates the similarity scores by taking the absolute difference between the 'popularity' of each movie and the 'popularity' of the given movie.
+
+```python
+    # Sort movies by similarity score
+    similar_movies = movies_df.sort_values(by='similarity').head(num_recommendations + 1)
+```
+- **Sort by Similarity**: This line sorts the movies by their similarity scores and selects the top `num_recommendations + 1` movies (including the given movie).
+
+```python
+    # Exclude the given movie from the recommendations
+    similar_movies = similar_movies[similar_movies['title'] != movie_name]
+```
+- **Exclude Given Movie**: This line excludes the given movie from the recommendations.
+
+```python
+    # Get the recommended movie titles
+    recommendations = similar_movies['title'].tolist()
+```
+- **Get Recommendations**: This line extracts the titles of the recommended movies and converts them to a list.
+
+```python
+    return recommendations
+```
+- **Return Recommendations**: This line returns the list of recommended movie titles.
+
+```python
+# Main function to run the recommendation engine
+def main():
+    # Get user input for the movie name
+    movie_name = input("Enter Movie Name: ")
+```
+- **Define main Function**: This function runs the recommendation engine.
+- **Get User Input**: This line prompts the user to enter a movie name.
+
+```python
+    # Get movie recommendations
+    recommendations = recommend_movies(movie_name)
+```
+- **Get Recommendations**: This line calls the `recommend_movies` function with the user-provided movie name.
+
+```python
+    # Display the recommendations
+    if isinstance(recommendations, str):
+        print(recommendations)
+    else:
+        print("Recommendations:")
+        for i, rec in enumerate(recommendations, 1):
+            print(f"{i}. {rec}")
+```
+- **Display Recommendations**: This block checks if the recommendations are a string (indicating an error message) and prints it. Otherwise, it prints the list of recommended movies.
+
+```python
+# Run the main function
+if __name__ == "__main__":
+    main()
+```
+- **Run main Function**: This block ensures that the `main` function runs when the script is executed directly.
+
+I hope this helps! If you have any more questions or need further clarification, feel free to ask!
