@@ -1,0 +1,59 @@
+import pandas as pd
+
+# Load the CSV file containing movie data
+movies_df = pd.read_csv('bollywood_data_set.csv')
+
+# Print column names to verify
+# print(movies_df.columns)
+
+# Ensure 'popularity' column exists and convert it to numeric
+if 'popularity' in movies_df.columns:
+    movies_df['popularity'] = pd.to_numeric(movies_df['popularity'], errors='coerce')
+    movies_df['popularity'] = movies_df['popularity'].fillna(0)
+else:
+    print("The 'popularity' column is not found in the dataset.")
+    # Handle the absence of the 'popularity' column appropriately
+    # For example, you can exit the script or use a different column
+
+# Function to recommend movies based on a given movie name
+def recommend_movies(movie_name, num_recommendations=3):
+    # Check if the movie exists in the dataset
+    if movie_name not in movies_df['title'].values:
+        return f"Movie '{movie_name}' not found in the dataset."
+
+    # Get the index of the given movie
+    movie_index = movies_df[movies_df['title'] == movie_name].index[0]
+
+    # Calculate similarity scores (for simplicity, using popularity as a proxy for similarity)
+    movies_df['similarity'] = abs(movies_df['popularity'] - movies_df.loc[movie_index, 'popularity'])
+
+    # Sort movies by similarity score
+    similar_movies = movies_df.sort_values(by='similarity').head(num_recommendations + 1)
+
+    # Exclude the given movie from the recommendations
+    similar_movies = similar_movies[similar_movies['title'] != movie_name]
+
+    # Get the recommended movie titles
+    recommendations = similar_movies['title'].tolist()
+
+    return recommendations
+
+# Main function to run the recommendation engine
+def main():
+    # Get user input for the movie name
+    movie_name = input("Enter Movie Name: ")
+
+    # Get movie recommendations
+    recommendations = recommend_movies(movie_name)
+
+    # Display the recommendations
+    if isinstance(recommendations, str):
+        print(recommendations)
+    else:
+        print("Recommendations:")
+        for i, rec in enumerate(recommendations, 1):
+            print(f"{i}. {rec}")
+
+# Run the main function
+if __name__ == "__main__":
+    main()
